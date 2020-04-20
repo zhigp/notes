@@ -1,0 +1,11 @@
+
+// windows CR LF --> linux LF 
+sed 's/.$//' a.txt > b.txt
+sed 's/^V$//'
+sed 's/\x0D$//'
+
+// linux LF --> windows CR LF
+sed 's/$/\r/' b.txt > a.txt
+sed 's/$'"/`echo \\\r`"
+
+

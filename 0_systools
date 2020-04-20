@@ -1,0 +1,59 @@
+
+fdisk; df;      findmnt; mount;     lsblk;
+
+df -i:          inode info
+lsblk -f:       uuid info
+
+lsblk, lscpu, lspci, lsusb;
+lsmod, lslocks, ipcs;
+
+
+htop:           process/cpu/mem info
+dstat:          resource stat
+iotop:          I/O usage of processes
+iftop, iptraf, iptraf-ng, mtr
+socat:          advanced netcat
+systat:         collection of monitoring tools: iostat/isag/mpstat/pidstat/sadf/sar
+
+
+pkexec:         exec a cmd as another user
+sysctl:         config kernel parameters at runtime
+tc:             show/manipulate kernel traffic control settings
+
+
+xtrace:         trace exec of program by printing currently exec function
+mtrace:         trace memory allocate/free calls
+strace:         trace syscalls/signals
+ltrace:         trace runtime library calls
+
+pmap:           report memory map of a process
+chrt:           manipulate the real-time attributes of a process
+prlimit:        get/set a process resource limits
+pidof:          get the pid of a running process
+pgrep:          identify processes bases on name/attributes
+fuser:          identify processes using files/sockets
+pwdx:           report current working dir of a process
+lsof:           list opened files by internet/protocal/dev/process
+pldd:           list dynamic shared objects loaded into process
+nice,renice,snice,skill:
+                process priority control
+
+
+e2label; 
+e2freefrag; e4defrag;
+
+dumpe2fs:       dump ext filesystem info
+skdump:         ATA SMART data
+debugfs:        ext fs debugger
+badblocks:      search a device for bad blocks
+fsadm:          utility to resize or check fs on a device
+e2image:        save critical ext fs metadata to a file
+fsfreeze:       suspend access to a fs
+blockdev:       call block device ioctls from the cmd line
+
+
+setpci:         config PCI devices
+
+
+
+

@@ -1,0 +1,20 @@
+
+&>abc       redirect stdout and stderr to file "abc"
+>&j         redirect stdout to j
+i>&j        redirect fd i to j
+
+n<&-        close input fd n
+<&-         close stdin
+0<&-        close stdin
+
+n>&-        close output fd n
+>&-         close stdout
+1>&-        close stdout
+
+[i]<>abc    open file "abc" for read and write, assign to fd i;
+            if "abc" does not exist then create it;
+            if i not assigned, default to stdin, fd0;
+
+exec <abc   from this line, all inputs comes from file "abc"
+exec >abc   from this line, all outputs redirect to file "abc"
+

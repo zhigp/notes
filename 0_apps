@@ -1,0 +1,36 @@
+
+term:       guake(gnome)
+            tilda(gnome-xorg)
+            yakuake(KDE)
+            qterminal(lxqt)
+
+
+test:       mousepad
+pic:        gpicview, geeqie
+music:      moc
+pdf:        mupdf
+rec:        ttyrec, termrec, ipbt
+sync:       grsync
+com:        tinyserial, minicom
+aur:	    aurget
+
+advcpmv:    cp, mv with progress bar
+tree:       list files/dirs like a tree
+xdg-open:   treminal cmd to open file with its preferred application
+
+tpp:        console ppt
+sdcv:       Stardict consol version
+ydcv:	    youdao console dictionary   # need python 3
+surfraw:    terminal web search
+bbswitch:   change power states of discrete nvidia graphics
+
+
+tcc:        tiny c compiler
+cppcheck:   C/C++ static code analysis tool
+valgrind:   memory check, debug and profiling toolset
+
+perf/oprofile/sysprof/gprof:
+            system profiling tool
+
+
+

@@ -1,0 +1,93 @@
+
+# -----------------------------------------------------------------------
+#   buffer & args
+# -----------------------------------------------------------------------
+
+# opened with ":e file"
+:e              :open file in the same buffer
+
+:brew           :rewind to the 1st file in buffer
+
+:bn             :edit next file in buffer
+:bp             :edit previous file in buffer
+
+# opened with "vim file1 file2 file3"
+:args           :display argument list, [arg] is the current file editing
+
+:rew            :rewind to the 1st file in args
+
+:n              :edit next file in args, ==:next
+:prev           :edit previous file in args, ==:previous
+:wn             :write then edit next file in args
+:wp             :write then edit previous file in args
+
+
+:e #            :switch between last edited two files,works for both multi-file open method
+:b5             :switch to 5th buffer
+:bd             :remove file from buffer list/arg list/tab list
+:qa             :quit all files
+
+# -----------------------------------------------------------------------
+#   split window
+# -----------------------------------------------------------------------
+
+vim -On f1 f2       :vertically split to n views, open file1 file2
+vim -on f1 f2       :horizontally split to n views, open file1 file2
+ctrl+w c            :close current split view
+
+:sp tmp             :horizontally split window, open or create file tmp
+:vsp tmp            :vertically split window, open or create file tmp
+ctrl+w s            :horizontally split current opened file
+ctrl+w v            :vertically split current opened file
+
+ctrl+w w            :move cursor to the next view
+ctrl+w j            :move cursor to the lower view
+ctrl+w k            :move cursor to the upper view
+ctrl+w h            :move cursor to the left view
+ctrl+w l            :move cursor to the right view
+
+ctrl+w J            :move current view down
+ctrl+w K            :move current view up
+ctrl+w H            :move current view left
+ctrl+w L            :move current view right
+
+ctrl+w =            :adjust width/height of views evenly
+ctrl+w < or >       :adjust width
+ctrl+w + or -       :adjust height
+
+# -----------------------------------------------------------------------
+#   vim tabs
+# -----------------------------------------------------------------------
+
+:tabe /path/tmp         :open a new tab, open or create file tmp
+:tabnew /path/tmp       :open a new tab, open or create file tmp
+
+:tab split              :in current buffer, open a new tab
+:tab split /path/tmp    :in current buffer, open or create file tmp
+
+:tabs                   :view tab list, use ">" show current tab, "+" show the modifiable buffer
+:tabc or :bd            :close current tab
+:tabo                   :close all other tabs except the current one
+
+gt / :tabn / C-PD       :switch to next tab
+gT / :tabp / C-PU       :switch to previous tab
+ngt / :tabn n / nC-PD   :go to tab n, first tab: n=1
+ngT / :tabp n / nC-PU   :go n tabs back
+:tabr                   :(rewind) switch to the first tab, ==:tabrew
+:tabl                   :switch to the last tab
+
+:tabm                   :move the current tab to last
+:tabm n / :ntabm        :move the current tab after tab n
+:tabm +n                :move the current tab to n pos right
+:tabm -n                :move the current tab to n pos left
+
+:tabd                   :exec cmd in all tabs
+
+# -----------------------------------------------------------------------
+#   operation on all buf/args/win/tabs
+# -----------------------------------------------------------------------
+
+:bufdo %s/foo/bar
+:argdo %s/foo/bar
+:windo %s/foo/bar
+:tabdo %s/for/bar

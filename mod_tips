@@ -1,0 +1,19 @@
+
+autodetected module:
+    mkinitcpio -M
+
+loaded module:
+    lsmod
+
+show module info:
+    modinfo name
+
+show module config:
+    modprobe -c | grep name
+
+show options that are set:
+    systool -v -m name
+
+deps of a module:
+    modprobe --show-depends name
+

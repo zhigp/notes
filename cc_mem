@@ -1,0 +1,25 @@
+
+new handler:
+
+namespace std {
+    typedef void (*new_handler)();
+    new_handler set_new_handler(new_handler pHandleFunc) throw();
+}
+
+new_handler:        typedef, 定义出一个指针指向函数，该函数没有参数没有返回值；
+set_new_handler:    获得一个new_handler并返回一个new_handler，尾端throw()是异常明细，表示该函数不抛出任何异常；
+    
+set_new_handler的参数是一个函数指针，指向new无法分配足够内存时被调用的函数；返回值是set_new_handler被调用前（但马上就要被替换）的那个new_handler函数；
+
+void HandleAllocFail() {
+    cerr << "Unable to construct requested object: out of memory!" << endl;
+    exit(1);
+}
+
+int main() {
+    set_new_handler(HandleAllocFail);
+    ...
+    return 0;
+}
+
+

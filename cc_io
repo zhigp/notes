@@ -1,0 +1,46 @@
+
+#define EOF -1      // in iostream 
+
+// io predefined format manipulator
+// * as default
+
+boolalpha       print true/false as string
+*noboolalpha    print true/false as 0/1
+showbase        print prefix of number base
+*noshowbase     donot print prefix of number base
+showpoint       print dot even the decimal part is 0
+*noshowpoint    donot print dot when the decimal part is 0
+showpos         print + before positive numbers
+*noshowpos      donot print + before positive numbers
+*skipws         skip blank chars when input
+noskipws        include blank chars when input
+uppercase       use 0X for hex, E for scientific
+*nouppercase    use 0x and e
+*dec            present numbers as decimal
+hex             present numbers as hex
+oct             present numbers as octal
+left            align numbers left
+right           align numbers right, when setw(n) is used
+internal        align +/- left, numbers right
+*fixed          print float numbers as decimals
+scientific      print float numbers as scientific numbers
+flush           flush ostream buffer
+ends            insert a blank char, then flush ostream buffer
+ws              extracts as many whitespace chars as possible from the current position
+// #include <iomanip>
+setfill(c)      use c as filling char
+setprecision(n) set float precision as n
+setw(n)         read/write as width n
+setbase(n)      output numbers as base n
+
+// iterator input/output:
+vector<int> ivec;
+istream_iterator<int> input(cin), eos;
+ostream_iterator<int> output(cout, " ");
+
+copy(input, eos, inserter(vec, vec.begin()));
+sort(ivec.begin(), ivec.end(), greater<int>());
+copy(ivec.begin(), ivec.end(), output);
+
+cout << endl;
+

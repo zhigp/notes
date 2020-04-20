@@ -1,0 +1,71 @@
+
+# -----------------------------------------------------------------------
+#   other
+# -----------------------------------------------------------------------
+
+:r foo              :insert contents of file foo after current line
+:!cmd               :exec sh cmd
+:r! cmd             :insert cmd outputs after current line
+:cd ..              :go to parent dir
+
+:history            :show edit history
+:undolist           :view the undo branch list in the buffer
+:undo <num>         :undo to a branch
+:earlier 10m        :back to the edit status of 10 minutes ago
+:later 5s           :jump to the edit status of 5 seconds later
+
+guu                 :lower case a line
+gUU                 :upper case a line
+~                   :invert case of current char
+
+ga                  :show ascii value of current char
+g8                  :show utf8 value(hex) of current char
+
+
+# -----------------------------------------------------------------------
+#   visual mode
+# -----------------------------------------------------------------------
+
+# visual block operate:
+ctrl+v              :start block operate
+h,j,k,l             :jump to select block
+I                   :insert contents
+ESC                 :valify operation
+
+# visual mode selection:
+# v, V, ctrl+v to select multiple lines, then:
+~                   :change cases
+J                   :join all slected line to one line
+< or >              :to indent left or right
+=                   :to make auto indent
+
+
+# -----------------------------------------------------------------------
+#   marks
+# -----------------------------------------------------------------------
+
+# each mark is designated by a single lower case letter
+
+ma                  :set a mark in current cursor location, named a
+
+:'a,'z              :from line contains mark a to line contains mark z
+
+'a                  :jump to the line containing mark a
+`a                  :jump to the exact location of mark a
+
+c'a                 :copy from line containing mark a to current line
+d`a                 :delete from exact location of mark a to current cursor location
+
+
+# -----------------------------------------------------------------------
+#   named buffer/register
+# -----------------------------------------------------------------------
+
+:reg                :display contents of all registers
+
+:ls                 :list of buffers
+
+"add                :cut current line to buffer a
+"b/foo              :copy from current line to next line contain string "foo"
+"ap                 :paste buffer a's content after current line
+

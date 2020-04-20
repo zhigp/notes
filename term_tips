@@ -1,0 +1,75 @@
+
+在命令行前加空格，该命令不会进入history里
+
+
+!!                              :last cmd
+!*                              :all parameter of last cmd
+^old^new / !!:gs/old/new        :replace first "old" with "new" in last cmd then exec
+^old^new^                       :replace all "old" with "new" in last cmd then exec
+
+
+> file.txt                      :create a blank file, shorter than touch
+${ABC:?error}                   检测变量ABC是否存在
+
+
+set -x                          打印执行的命令及其参数
+set +x                          取消上面的打印
+set -e                          当有错误发生时abort执行
+
+
+kill -l                         数字与信号的对应表
+man 7 signal                    查看各种信号
+man ascii                       显示ascii码表
+
+
+// capture screen under console
+install package util-linux
+sudo setterm --dump --file dump.term
+
+
+// a, b已经被uniq过：
+cat a b | sort | uniq > c       并集：　c = a union b
+cat a b | sort | uniq -d > c    交集：　c = a intersect b
+cat a b b | sort | uniq -u > c  差集：　c = a - b
+
+
+tail -f /path/to/file.log | sed '/^Finished: SUCCESS$/ q'
+当file.log里出现Finished: SUCCESS时候就退出tail，这个命令用于实时监控并过滤log是否出现了某条记录
+
+
+
+// disable touchpad, can be add to ~/.xprofile
+synclient TouchpadOff = 1
+
+
+// identify the encoding of a file:
+enca -L zh_CN file
+
+// convert file encodings:
+enconv -L zh_CN -x UTF-8 file
+iconv -f GB2312 -t UTF-8 file.in -o file.out
+
+
+
+curl ifconfig.me
+当你的机器在内网的时候，可以通过这个命令查看外网的IP
+
+ssh user@server bash < /path/to/local/script.sh
+在远程机器上运行一段本地脚本
+
+ssh user@host cat /path/to/remotefile | diff /path/to/localfile -
+比较一个远程文件和一个本地文件
+
+// download whole website
+wget -c -r -p -np -k -L -e robots=off -U "Blink WebKit Gecko Firefox iPad" http://wiki.osdev.org
+
+
+
+curl -u username –silent “https://mail.google.com/mail/feed/atom” | perl -ne ‘print “\t” if /<name>/; print “$2\n” if /<(title|name)>(.*)<\/\1>/;’
+检查你的gmail未读邮件
+
+
+
+
+
+

@@ -1,0 +1,209 @@
+# -----------------------------------------------------------------------
+#   basics
+# -----------------------------------------------------------------------
+
+I       :edit at current line head
+A       :edit at current line end
+
+o       :insert a new line after 
+O       :insert a new line before
+ctrl+r  :redo
+
+:.,$        :from current line to last line
+:%          :== :1,$    all lines
+
+:20,+50     :from line 20 to line 20+50
+:20,-10     :from line 20-10 to line 20
+
+.           :repeat last cmd
+gi          :go to last edit location
+:%!sort     :sort all lines
+
+
+:e              :open a file
+:w file         :save a copy
+:saveas file    :save a copy
+:Ex             :file explorer
+
+# -----------------------------------------------------------------------
+#   page up/down
+# -----------------------------------------------------------------------
+
+z               :scroll current line to top of screen
+nz              :scroll line n to top line of screen
+
+ctrl-d          :scroll half page to end
+ctrl-u          :scroll half page to head
+ctrl-f          :scroll one page to end
+ctrl-b          :scroll one page to head
+
+# -----------------------------------------------------------------------
+#   cursor move
+# -----------------------------------------------------------------------
+
+gg      :jump to first line
+G       :jump to last line
+
+:5      :jump to line 5 head
+5gg     :jump to line 5 head
+5$      :jump to line 5 end
+
+8+      :jump down 8 lines
+8-      :jump up 8 lines
+
+
+H:          :jump to the top line of current screen
+L:          :jump to the bottom line of current screen
+M:          :jump to the middle line of current screen
+
+
+0           :jump to head of line
+$           :jump to end of line
+(           :jump to the head of sentence
+)           :jump to the end of sentence
+{           :jump to the head of paragraph
+}           :jump to the end of paragraph
+
+%           :jump to the matching (), [], {}
+
+t_              :jump forward untill meet "_"
+T(              :jump backward until meet "("
+
+W               :jump to the next word head, separated by blank
+E               :jump to the next word end, separated by blank
+B               :jump to the previous word head, separated by blank
+
+fa              :jump to the next char "a" in current line
+Fa              :jump to the previous char "a" in current line
+
+# -----------------------------------------------------------------------
+#   copy, paste, delete
+# -----------------------------------------------------------------------
+
+x       :delete a word
+p       :paste after
+P       :paste before
+
+y^          :copy from cursor to line head
+d^          :delete from cursor to line head
+y$          :copy from cursor to line end
+d$          :delete from cursor to line end
+
+y3w or 3yw  :copy 3 words afterward from current cursor
+d3w or 3dw  :delete 3 words afterward from current cursor
+
+n1,n2 co n3     :copy contents between line n1 and n2, paster after line n3
+n1,n2 m n3      :move contents between line n1 and n2 to line after n3
+n1,n2 d         :delete contents between line n1 and n2
+
+
+# -----------------------------------------------------------------------
+#   search & substitute
+# -----------------------------------------------------------------------
+
+/foo        :search "foo" afterward
+?foo        :search "foo" backward
+
+n           :repeat search at same direction
+N           :repeat search at opposite direction
+
+\c          :ignore case in search
+\C          :force case matching in search
+
+y/foo           :copy from current line to the next line contain string "foo"
+d?bar           :delete from current line to the previous line contain string "bar"
+
+/foo\|bar       :"foo" or "bar"
+/^foo           :line begin with "foo"
+/[A-C]          :line begin with "A or B or C"
+/[d-f][A-C]     :line begin with "d or e or f" then followed by "A or B or C"
+
+:%g/foo/d       :delete any lines contain "foo", g=globally
+:%v/foo/d       :delete any lines which DONOT contain "foo", v=conVersely
+:%g/foo/m$      :move any lines contain "foo" to the end of the file
+
+:s/foo/bar              :substitute the first "foo" with "bar" in current line
+:s/foo/bar/g            :substitute all the  "foo" with "bar" in current line
+
+:38,99s/foo/bar/g       :substitute all the "foo" with "bar" in lines between 38 and 99
+
+:%s/foo/bar             :substitute the first occurrence of "foo" with "bar" on each line in all lines
+:%s/foo/bar/g           :substitute all the "foo" to "bar" on each line in all lines
+
+:g/one\|two/            :list lines containing "one" or "two"
+:%g/zzz/s/foo/bar/g     :for every line contains "zzz" substitute all "foo" with "bar"
+
+
+# -----------------------------------------------------------------------
+#   block copy,delete,select,modify: '' "" () [] {} <>
+# -----------------------------------------------------------------------
+y   :copy
+d   :delete
+v   :select
+c   :modify, delete first then switch to insert mode
+
+# sentence: end with .
+yis     dis     vis     cis
+        :copy,delete,select,modify a sentence
+
+yas     das     vas     cas
+        :copy,delete,select,modify a sentence including "."
+
+
+# {} in the following lines represent "paragraph"
+y{  d{  v{  c{
+        :copy,delete,select,modify to paragraph head
+
+y}  d}  v}  c}
+        :copy,delete,select,modify to paragraph end
+
+
+yip     dip     vip     cip 
+        :copy,delete,select,modify current paragraph
+
+yap     dap     vap     cap 
+        :copy,delete,select,modify current paragraph and blank lines folloing it
+
+{,y}    {,d}    {,v}    {,c}                 
+:copy,delete,select,modify current paragraph
+
+
+# contents inside ()
+yib     dib     vib     cib
+        :copy,delete,select,modify contents inside ()
+
+yiB     diB     viB     ciB
+        :copy,delete,select contents inside and ()
+
+
+# place cursor "at" one side of the ()[]{}:
+y%  d%  v%  c%
+        :copy,delete,select,modify contents inside and the ()[]{}
+
+# place cursor "inside" one side of the ()[]{}:
+y%  d%  v%  c%
+        :copy,delete,select,modify contents inside to the ()[]{} head
+
+
+# move cursor to any position inside or at the area:
+# {} in the following lines represent {} itself
+yi'     yi"     yi(     yi)     yi[     yi]     yi{     yi}     yi<     yi>
+di'     di"     di(     di)     di[     di]     di{     di}     di<     di>
+vi'     vi"     vi(     vi)     vi[     vi]     vi{     vi}     vi<     vi>
+ci'     ci"     ci(     ci)     ci[     ci]     ci{     ci}     ci<     ci>
+        :copy,delete,select,modfy contents inside '', "", (), [], {}, <>
+
+ya'     ya"     ya(     ya)     ya[     ya]     ya{     ya}     ya<     ya>
+da'     da"     da(     da)     da[     da]     da{     da}     da<     da>
+va'     va"     va(     va)     va[     va]     va{     va}     va<     va>
+ca'     ca"     ca(     ca)     ca[     ca]     ca{     ca}     ca<     ca>
+        :copy,delete,select,modfy contents inside '', "", (), [], {}, <>, including themselves
+
+
+# process contents inside <abc> </abc>, not inside <...>:
+yit     dit     vit     cit
+        :copy,delete,select,modify contents inside the <abc></abc>
+
+yat     dat     vat     cat
+        :copy,delete,select,modify contents inside and the <abc></abc>
+

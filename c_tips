@@ -1,0 +1,10 @@
+
+1. 读取一个字符串遇到逗号停止：
+    scanf("%[^,]\n",str);
+
+
+2. 忽略前面的字符串，如“Tylor Swift"只取"Swift"：
+    scanf("%*s %s", fname);
+
+
+3. 

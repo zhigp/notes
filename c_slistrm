@@ -1,0 +1,15 @@
+
+// delete singly-linked list entry using pointers-to-pointers
+
+remove_if(node **pphead, cond_func cmp) {
+    node **pp = pphead;
+    while(*pp) {
+        node *entry = *pp;
+        if(cmp(entry)) {
+            *pp = entry->next;
+            free(entry);
+        }
+        else
+            pp = &entry->next
+    }
+}
