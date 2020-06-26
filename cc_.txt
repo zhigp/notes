@@ -1,0 +1,230 @@
+
+
+
+1. using register var and ++i in loop:
+
+    register int64_t sum = 0;
+
+    for(int i=0; i<cnt; ++i)
+        sum += val[i];
+
+
+2.
+    int a,b;
+    if( (a|b)>0 )       // == if(a>0 && b>0)
+
+
+3.
+    for(size_t i=0, len=str.size(); i<len; ++i)
+
+
+
+const 在 * 左边，表示被指物是常量；
+const 在 * 右边，表示指针自身是常量；
+
+
+const成员函数：
+
+void Tmp::Test() const;
+
+1. 不可改动对象内容；
+2. 可以操作const对象；
+
+
+两个成员函数常量性（constness）不同，可以被重载；
+
+mutable bool lenValid;
+mutable释放掉non-static成员变量的bitwise constness约束，使其在const函数中也可以被更改；
+
+===============================================================
+
+new handler:
+
+namespace std {
+    typedef void (*new_handler)();
+    new_handler set_new_handler(new_handler pHandleFunc) throw();
+}
+
+new_handler:        typedef, 定义出一个指针指向函数，该函数没有参数没有返回值；
+set_new_handler:    获得一个new_handler并返回一个new_handler，尾端throw()是异常明细，表示该函数不抛出任何异常；
+    
+set_new_handler的参数是一个函数指针，指向new无法分配足够内存时被调用的函数；返回值是set_new_handler被调用前（但马上就要被替换）的那个new_handler函数；
+
+void HandleAllocFail() {
+    cerr << "Unable to construct requested object: out of memory!" << endl;
+    exit(1);
+}
+
+int main() {
+    set_new_handler(HandleAllocFail);
+    ...
+    return 0;
+}
+
+===============================================================
+
+C++内置或复合类型成员变量初始值：
+在局部作用域中这些值不会被初始化；
+在全局作用域中这些值被编译器始化为0，（包换数组）；
+
+
+
+const:
+类内部只能声明，在初始化列表里初始化，而且必须初始化；
+
+
+
+static:
+类内部只能声明，在外部定义；
+定义时不加关键字static, 或以赋初值，赋初值系统自动赋0，相当于全局变量；
+
+class Tmp {
+public:
+    static int val;
+};
+
+int Tmp::val = 123;
+
+
+
+static const == const static:
+类内部可以初始化，也可以在类外始化，在类外初始化的时候加const但不加static；
+
+class Tmp {
+public:
+    static const char   c;
+    static const int    i;
+    static const float  f;
+    
+    static const char   c1='z';
+    static const int    i1=1122;
+    static const float  f1=3.14;    // ok for gcc, error for vs
+};
+
+const char Tmp::c   = 'z';
+const int Tmp::i    = 1122;
+const float Tmp::f  = 3.14;
+
+===============================================================
+
+C++编译器默认会为类创建4个函数： 默认构造函数，拷贝构造函数，赋值函数，析构函数；
+
+class Tmp {
+public:
+    Tmp() {...};
+
+    Tmp(const Tmp &rhs) {...};
+    Tmp & operator=(const Tmp &rhs) {...};
+
+    ~Tmp() {...};
+};
+
+这些函数全是public且inline，在它们被调用的时候编译器自动创建；
+
+只要声明自己的构造函数，不管有没有参数，编译器不再创建默认构造函数；
+编译器创建的析构函数是”non-virtual“,除非这个类的基类有虚析构函数；
+
+如果类内含有“引用”或是“const"数据成员，编译器不会创建拷贝构造及赋值函数；
+如果父类的拷贝构造及赋值函数声明为private,刚编译器不会为其子类创建拷贝构造及赋值函数；
+
+自己声明其中一个：    阻止编译器创建相应函数；
+令其为私有：         阻止类实例及其它类调用；（编译期错误）
+令其私有且不实现：    阻止任何调用：包括类内部成员及friend函数/类；（链接期错误）
+
+
+为阻止拷贝而设计基类，可以将上面链接期错误提前到编期：
+
+class Uncopyable {
+protected:
+    Uncopyable() {};
+    ~Uncopyable() {};
+private:
+    Uncopyable(const Uncopyable &);
+    Uncopyable & operator=(const Uncopyable &);
+};
+
+===============================================================
+ 
+// construct a function object for find_if, count_if:
+
+// pros:   1. operator() could be inlined;
+//         2. object could add extra data for caching;
+
+
+// 1. introduce a member variable to store the value being compared:
+// usage: find_if(ivec.begin(), ivec.end(), CmpEq(25));
+
+class CmpEq{
+public:
+    CmpEq(int &cmp):val(cmp){}
+    bool operator()(int &tmp){ return (tmp==val); }
+private:
+    int val;
+}
+
+
+// 2. use template argument to pass the value being compared:
+// usage: find_if(ivec.begin(), ivec.end(), CmpEq<25>());
+
+template < int val>
+class CmpEq{
+public:
+    bool operator()(int &tmp){ return (tmp==val); }
+}
+
+===============================================================
+
+函数屏蔽（name hiding）：
+
+当在子类中定义了与基类函数名字相同的函数后，基类的所有同名函数即被屏蔽（子类中不能再被调用），不论其参数是否相同，是否是虚函数；
+其基本理由是为了防止在程序中建立新的子类时从疏远的基类中误继承到重载函数；
+可以使用 using Base::BaseFuncName; 语句使基类同名函数在子类中再次可见；
+
+
+
+接口继承与实现继承：
+
+1. public继承下，子类总是继承基类的接口；
+
+2. 声明一个pure virtual函数的目的，是让子类只继承函数接口；
+
+    可以为纯虚函数提供定义（默认实现，子类具体实现中可以调用），调用的方式是明确指出其class名称。
+    Base *p = new Derived;
+    p->Base::PureVirtual();
+
+3. 声明一个impure virtual函数的目的，是让子类继承其接口和缺省实现；
+
+4. 声明non-virtual函数的目的，是让子类继承接口及一个强制性的实现；
+    子类中不应该再重新定义此函数；
+
+----------------------------------------------------------------------------------------------------------------
+
+virtual 析构函数：
+
+如果派生类对象经由一个基类指针被删除，而该基类函数为 non-virtual, 其结果未定义：实际执行时通常是派生类对象的派生部分没有被销毁；
+Base *p = new Derived;
+delete p;
+解决办法是将基类的析构函数声明为 virtual;
+
+如果一个类意图不被用作基类，定义一个 virtual 析构函数会使对象创建vtbl而增加体积，降低效率，与C语言不兼容；
+
+STL的所有容器类不含虚函数，不被设计作为基类使用；
+
+pure virtual 析构函数允许，但是仍然需要为其提供定义；
+
+----------------------------------------------------------------------------------------------------------------
+
+派生类对象的基类构造期间，virtua函数没有多态性，即不会下降到派生类阶层：
+派生类对象的基类构造期间，对象的类型是基类类型；
+派生类对象的基类构造期间，派生类的成员变量尚未初始化；
+
+----------------------------------------------------------------------------------------------------------------
+
+构造函数的动作方式是，最基层基类构造函数最先被调用，然后依次调用其派生类的构造函数；
+析构函数的运作方式是，最远层派生的类其析构函数最先被调用，然后是其每一个基类的析构函数被调用；
+
+===============================================================
+
+
+
+

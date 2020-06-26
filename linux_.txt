@@ -1,4 +1,45 @@
 
+// create a boot item in HP bootmgr
+efibootmgr -c -d /dev/sda -p 1 -l '/vmlinuz-linux' -u 'root=/dev/sda3 rw initrd=initramfs-linux.img' -L 'Arch Linux - x64'
+
+
+// change the permission of all the dirs/files in current folder:
+find -type d | xargs sudo chmod 755
+find -typd f | xargs sudo chmod 644
+
+
+// list the 8 biggest file in size
+du -s * | sort -nr | head -8
+
+// list the top 8 processes occupy memeory most
+ps axu | sort -nrk4 | head -8
+
+===========================================================================
+
+Term IO:
+
+&>abc       redirect stdout and stderr to file "abc"
+>&j         redirect stdout to j
+i>&j        redirect fd i to j
+
+n<&-        close input fd n
+<&-         close stdin
+0<&-        close stdin
+
+n>&-        close output fd n
+>&-         close stdout
+1>&-        close stdout
+
+[i]<>abc    open file "abc" for read and write, assign to fd i;
+            if "abc" does not exist then create it;
+            if i not assigned, default to stdin, fd0;
+
+exec <abc   from this line, all inputs comes from file "abc"
+exec >abc   from this line, all outputs redirect to file "abc"
+
+===========================================================================
+
+
 在命令行前加空格，该命令不会进入history里
 
 
@@ -37,7 +78,6 @@ tail -f /path/to/file.log | sed '/^Finished: SUCCESS$/ q'
 当file.log里出现Finished: SUCCESS时候就退出tail，这个命令用于实时监控并过滤log是否出现了某条记录
 
 
-
 // disable touchpad, can be add to ~/.xprofile
 synclient TouchpadOff = 1
 
@@ -64,12 +104,19 @@ ssh user@host cat /path/to/remotefile | diff /path/to/localfile -
 wget -c -r -p -np -k -L -e robots=off -U "Blink WebKit Gecko Firefox iPad" http://wiki.osdev.org
 
 
-
 curl -u username –silent “https://mail.google.com/mail/feed/atom” | perl -ne ‘print “\t” if /<name>/; print “$2\n” if /<(title|name)>(.*)<\/\1>/;’
 检查你的gmail未读邮件
 
+===========================================================================
 
 
+===========================================================================
 
 
+===========================================================================
 
+
+===========================================================================
+
+
+===========================================================================

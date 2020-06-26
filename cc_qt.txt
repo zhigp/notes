@@ -1,0 +1,69 @@
+
+Naming:
+
+1. General Variables:
+   gVar: global
+   kVar: constants
+   sVar: static
+
+2. Class Names:
+   class ZClassName
+
+3. Class Member Functions:
+   int initVar();
+   int getVar();
+   int setVar();
+   int isValid();
+   int fromVar();
+   int toVar();
+   int maxVar();
+   int minVar();
+
+4. Signal/Slot:
+   void sgBtnClicked();
+   void stBtnClicked();
+
+=========================================================================
+
+1. 使用自定义字体
+
+    int ftIdx = QFontDatabase::addApplicationFont(":/Font");
+    if(ftIdx!=-1){
+        QStringList ftNames(QFontDatabase::applicationFontFamilies(ftIdx));
+        if(ftNames.count()>0){
+            QFont ftKSF(ftNames.at(0));
+            aKPinEye.setFont(ftKSF);
+        }
+    }
+
+=========================================================================
+
+
+
+=========================================================================
+
+
+
+=========================================================================
+
+
+
+=========================================================================
+
+
+
+=========================================================================
+
+
+
+=========================================================================
+
+
+
+
+
+
+
+
+
+
