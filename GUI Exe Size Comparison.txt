@@ -1,0 +1,10 @@
+写一个窗口，按顺序展示几张图片，比较使用 7z 压缩后的安装包大小：
+  
+hta < win32 asm < win32api(nocrt) < wtl(nocrt) < vb6 < delphi <
+   win32api(crt) < wtl(crt) < mfc < wxwidget < qt(mingw) <
+   gtk(msvcrt) < qt(msvcrt) < pyqt < kivy < winform(.net) < swing(jvm) < electron
+  
+注: windows sdk 和 vc6 都提供了 c 编译器，直接使用系统自带的 vc6 crt，新版本的 vc 在布署时需要安装 msvcrt 或者带上相关的 dll 比较大，vb6 的 runtime windows 系统已经自带了。
+除了 vc6，不考虑其它旧版本的 msvc，统一用 msvc2019。
+  
+第一行能够做到 1m 以内，第二行能够做到 10m 以内，第三行，10m 以上。
