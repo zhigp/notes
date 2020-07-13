@@ -1,0 +1,8 @@
+
+Font Naming Table Specs:
+https://docs.microsoft.com/zh-cn/typography/opentype/spec/name
+
+OTFCC Tools:	otfccdump/oftccbuild (ftdump/ftbuild)
+
+otfccdump xxx.ttf -o xxx.json --pretty
+otfccbuild xxx.json -o xxx-out.ttf -O3 -s

@@ -1,0 +1,31 @@
+
+Qt 的图形架构调用 OpenGL ES 2.0 进行底层的渲染
+Qt已经编译了PNG支持，可以读写程序包含的PNG图片
+
+Angle:	把 OpenGL 调用翻译成 DirectX 调用
+	安装显卡驱动则一般支持OpenGL 2.0，不用Angle
+
+布署：
+windeployqt.exe PinEye.exe --no-angle --no-opengl-sw
+
+1. 去掉Angle支持：		LibEGL.dll
+			libGLESV2.dll
+
+2. 去掉OpenGL软件模拟：	opengl32sw.dll
+
+3. 去掉国际化翻译：		translations\
+
+4. 去掉图片格式支持：	Qt5Svg.dll
+			iconengines\
+			imageformats\
+
+5. 去掉线程库：		libwinpthread-1.dll
+
+6. 去掉VistaStyle：		styles\
+
+
+
+UPX PinEye.exe
+7zip All
+
+

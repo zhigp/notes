@@ -1,6 +1,6 @@
 
 更改界面字体：
 
-在相应theme文件夹下编辑gtkrc文件，在其末尾加入字体定义：
+编辑 Gimp\share\gimp\2.0\themes\Dark\gtkrc，在其末尾加入字体定义：
 
 style "nl-font" {font_name="Segoe UI 14"} class "*" style "nl-font"
