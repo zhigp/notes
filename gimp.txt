@@ -3,4 +3,4 @@
 
 编辑 Gimp\share\gimp\2.0\themes\Dark\gtkrc，在其末尾加入字体定义：
 
-style "nl-font" {font_name="Segoe UI 14"} class "*" style "nl-font"
+style "nl-font" {font_name="NLF 14"} class "*" style "nl-font"

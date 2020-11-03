@@ -1,0 +1,10 @@
+
+Pull Remote Repo:
+
+	git init
+
+	git remote add origin git@github.com:KiCad/kicad-symbols.git
+
+	git pull origin master
+
+	git branch --set-upstream-to=origin/master master

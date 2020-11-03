@@ -1,11 +1,12 @@
 //Windows批量操作
 for %v in (*.avi) do (ffmpeg -i %v "out\%~nv.mkv")
 
-// 视频格式转换：
+// 视频格式转换
 ffmpeg -i in.mov out.mp4
 
-// 视频转码：
-// -crf 18：视频质量(0-51)，越小越清晰越大越模糊，默认H265:28==H264:23；-s 1920x1080：分辨率
+// 视频转码
+// -crf 18：视频质量(0-51)，越小越清晰越大越模糊，默认H265:28==H264:23；
+// -s 1920x1080：分辨率
 ffmpeg -hwaccel cuda/nvdec -c:v vc1_cuvid -i in.wmv -crf 0 -c:v h264_nvenc -c:a aac out.mkv
 ffmpeg -hwaccel qsv -c:v vc1_qsv -i in.wmv -crf 0 -c:v hevc_qsv -c:a aac out.mkv
 
@@ -13,9 +14,8 @@ ffmpeg -hwaccel qsv -c:v vc1_qsv -i in.wmv -crf 0 -c:v hevc_qsv -c:a aac out.mkv
 // 从 12:34 剪切到 1:23:45
 ffmpeg -i in.mkv -ss 12:34 -to 1:23:45 -c copy out.mkv
 
-// 从 12:00 剪切到 12:30
+// 从 12:00 开始剪切30秒
 ffmpeg -i in.mkv -ss 12:00 -t 00:30 -c copy out.mkv
-
 
 // 视频拼接
 ffmpeg -f concat -i filelist.txt -c copy out.mp4
@@ -23,25 +23,52 @@ ffmpeg -f concat -i filelist.txt -c copy out.mp4
         file in1.mp4
         file in2.mp4
 
-// 去掉视频中的音频： -an 去掉音频；
+
+// 去掉视频中的音频： 
+// -an：去掉音频；
 ffmpeg -i in.mp4 -c:v copy -an out.mp4
 
-// 提取视频中的音频： -vn 去掉视频；
+// 提取视频中的音频：
+// -vn：去掉视频；
 ffmpeg -i in.mp4 -c:a copy -vn out.mp3
 
 // 音视频合成
 ffmpeg –i in.mp4 –i in.mp3 –c copy out.mp4
 
+// 图片与音乐合成视频(图片需先调整好大小)
+// -s：分辨率
+// -t：视频时长
+ffmpeg -loop 1 -f image2 -framerate 1 -pix_fmt yuv420p -i logo.jpg -i in.mp3 -c:v libx264 -c:a copy -map 0:0 -map 1:a -s 1920x1080 -t 180 out.mp4
+ffmpeg -loop 1 -i logo.jpg -i in.mp3 -c:v libx264 -c:a aac -strict experimental -b:a 192k -shortest out.mp4
 
-// 视频添加水印： main_w-overlay_w-10 视频的宽度-水印的宽度-水印边距
-ffmpeg -i in.mp4 -i logo.jpg -filter_complex [0:v][1:v]overlay=main_w-overlay_w-10:main_h-overlay_h-10[out] -map [out] -map 0:a -c:a copy out.mp4
 
+// 视频添加图片封面(图片先调整到视频大小)
+ffmpeg -i in.mp4 -i logo.png -map 0 -map 1 -c copy -c:v:1 png -disposition:v:1 attached_pic out.mp4
+
+// 视频添加图片水印(图片需先调整好大小)
+main_w：视频宽度
+main_h：视频高度
+overlay_h：水印宽度
+overlay_h：水印高度
+ffmpeg -i in.mp4 -i logo.png -filter_complex [0:v][1:v]overlay=main_w-overlay_w-10:main_h-overlay_h-10[out] -map [out] -map 0:a -c:a copy out.mp4
+
+// 视频添加文字水印(需要将字体文件放置在当前运行目录)
+// 1280x720放置电话号码：24Pt@1070:680
+ffmpeg -i in.mp4 -vf "drawtext=fontfile=NLF.ttf:text=NanLv:x=10:y=10:fontsize=24:fontcolor=yellow:shadowy=2" out.mp4
+
+
+// 更正手机视频分辨率(画面实际为720x1280但视频分辨率为1280x1280)
+ffmpeg -i in.mp4 -s 720x1280 -c:a copy out.mp4
+
+// 设置视频的屏幕高宽比
+ffmpeg -i in.mp4 -aspect 16:9 out.mp4
 
 // 截取视频局部
 ffmpeg -i in.mp4 -filter:v "crop=out_w:out_h:x:y" out.mp4
 
-// 截取部分视频：从[80,60]的位置开始，截取宽200，高100的视频
-ffmpeg -i in.mp4 -filter:v "crop=80:60:200:100" -c:a copy out.mp4
+// 截取部分视频
+// 从[200,0]的位置开始，截取640x480的视频
+ffmpeg -i in.mp4 -filter:v "crop=640:480:200:0" -c:a copy out.mp4
 
 // 截取右下角的四分之一
 ffmpeg -i in.mp4 -filter:v "crop=in_w/2:in_h/2:in_w/2:in_h/2" -c:a copy out.mp4
@@ -50,10 +77,17 @@ ffmpeg -i in.mp4 -filter:v "crop=in_w/2:in_h/2:in_w/2:in_h/2" -c:a copy out.mp4
 ffmpeg -i in.mp4 -filter:v "crop=in_w:in_h-40" -c:a copy out.mp4
 
 
-// 旋转视频：PI/2为顺时针旋转90度
+// 旋转视频
+// 视频元数据旋转
+// 90为逆时针旋转90度，实际为270度
+ffmpeg -i in.mp4 -metadata:s:v rotate=90 -codec copy out.mp4
+
+// PI/2为顺时针旋转90度
 ffmpeg -i in.mp4 -vf rotate=PI/2 out.mp4
 
-// 缩放视频： iw是输入的宽度，iw/2就是一半; -1 为保持宽高比
+// 缩放视频
+// iw：输入的宽度，iw/2就是一半
+// -1：保持宽高比
 ffmpeg -i in.mp4 -vf scale=iw/2:-1 out.mp4
 
 // 视频变速
@@ -69,13 +103,17 @@ ffmpeg -i in.mp4 -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2.0[a]" -ma
 // 将图片合成视频
 ffmpeg -f image2 -i image%d.jpg out.mp4
 
-// 视频截图： -s 设置分辨率; -f 强迫采用格式fmt
+// 视频截图：
+// -s：设置分辨率
+// -f：强迫采用格式fmt
 ffmpeg –i test.mp4 –f image2 -t 0.001 -s 320x240 image-%3d.jpg
 
-// 视频分解为图片： -r 指定截屏频率
+// 视频分解为图片：
+// -r：指定截屏频率
 ffmpeg –i test.mp4 –r 1 –f image2 image-%3d.jpg
 
-// 将视频转为gif： -pix_fmt 指定编码
+// 将视频转为gif：
+// -pix_fmt：指定编码
 ffmpeg -i in.mp4 -ss 0:0:30 -t 10 -s 320x240 -pix_fmt rgb24 out.gif
 
 // 将视频前30帧转为gif
