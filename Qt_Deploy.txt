@@ -13,7 +13,7 @@ windeployqt.exe PinEye.exe --no-angle --no-opengl-sw
 
 2. 去掉OpenGL软件模拟：	opengl32sw.dll
 
-3. 去掉国际化翻译：		translations\
+3. 去掉国际化翻译：	translations\
 
 4. 去掉图片格式支持：	Qt5Svg.dll
 			iconengines\
